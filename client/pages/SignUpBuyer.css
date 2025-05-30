@@ -1,0 +1,33 @@
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+}
+
+.shadow-lg {
+  box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.08)!important;
+}
+
+.rounded-4 {
+  border-radius: 1.5rem !important;
+}
+
+.form-label, .fw-semibold {
+  font-weight: 600 !important;
+}
+
+.input-group-text {
+  background: #f8f9fa;
+  border-radius: 0.5rem 0 0 0.5rem;
+}
+
+.form-control {
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+@media (max-width: 767.98px) {
+  .p-5 {
+    padding: 2rem !important;
+  }
+  .rounded-4 {
+    border-radius: 1rem !important;
+  }
+}
