@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import buyer from "../src/assets/buyer.png";
-import { useState } from "react";
-import axios from 'axios';
-import {  useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const SignupforBuyer = () => {
   const navigate = useNavigate();
@@ -15,52 +14,43 @@ const SignupforBuyer = () => {
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
 
-
-
-
   const Signup = (e) => {
-     e.preventDefault();
-    
+    e.preventDefault();
+
     if (!name || !mail || !password) {
-      setMessage("Please fill all the fields");
-      setMessageType("error");
-      setTimeout(() => setMessage(""), 2000);
+      showMessage("Please fill all the fields", "error");
       return;
     }
 
     if (password.length < 6) {
-      setMessage("Password must be at least 6 characters long");
-      setMessageType("error");
-      setTimeout(() => setMessage(""), 2000);
+      showMessage("Password must be at least 6 characters long", "error");
       return;
     }
 
+    const url = "http://localhost:3000/signup/buyer";
+    const allData = { name, mail, password };
 
+    axios
+      .post(url, allData)
+      .then((res) => {
+        if (res.status === 201) {
+          showMessage(res.data.message || "Buyer Account Created Successfully", "success");
+          setTimeout(() => navigate("/Signin"), 2000);
+        }
+      })
+      .catch((err) => {
+        console.log("Backend error:", err.response?.data);
+        const backendMsg =
+          err.response?.data?.error || "Something went wrong. Please try again.";
+        showMessage(backendMsg, "error");
+      });
+  };
 
-
-    const allData = {name, mail, password}
-    // console.log(allData);
-
-    const url = "http://localhost:3000/signup";
-    axios.post(url, allData)
-    .then((res) => {
-      console.log(res.data);
-      if (res.status === 201) {
-        localStorage.setItem("name", name);
-        setMessage("User Created Successfully");
-        setMessageType("success"); 
-        setTimeout(() => navigate("/Signin"), 2000); 
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      setMessage("User Already Exists");
-      setMessageType("error"); 
-      setTimeout(() => setMessage(""), 2000);
-    })
-    
-  }
-
+  const showMessage = (msg, type) => {
+    setMessage(msg);
+    setMessageType(type);
+    setTimeout(() => setMessage(""), 2000);
+  };
 
   return (
     <div className="container min-vh-100 d-flex align-items-center justify-content-center">
@@ -69,7 +59,10 @@ const SignupforBuyer = () => {
         style={{ maxWidth: "900px" }}
       >
         {/* Image Section */}
-        <div className="col-12 col-md-6 d-flex align-items-center justify-content-center p-0" style={{ backgroundColor: "#e1f0d3" }}>
+        <div
+          className="col-12 col-md-6 d-flex align-items-center justify-content-center p-0"
+          style={{ backgroundColor: "#e1f0d3" }}
+        >
           <img
             src={buyer}
             alt="signup-illustration"
@@ -85,64 +78,77 @@ const SignupforBuyer = () => {
 
             {message && (
               <p
-    className={`alert mt-3 text-center ${
-      messageType === "success" ? "alert-success" : "alert-danger"
-    }`}
-  >
-    {message}
-</p>
-)}
-      <form onSubmit={Signup} >
+                className={`alert mt-3 text-center ${messageType === "success" ? "alert-success" : "alert-danger"
+                  }`}
+              >
+                {message}
+              </p>
+            )}
 
-            <div className="mb-3">
-              <label className="form-label">Enter Your Name</label>
-              <div className="input-group">
-                <span className="input-group-text">
-                  <i className="bi bi-person"></i>
-                </span>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter Your Name Here" value={name} onChange={(e) => setName(e.target.value)}
-                />
+            <form onSubmit={Signup}>
+              <div className="mb-3">
+                <label className="form-label">Enter Your Name</label>
+                <div className="input-group">
+                  <span className="input-group-text">
+                    <i className="bi bi-person"></i>
+                  </span>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter Your Name Here"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
               </div>
-            </div>
-            <div className="mb-3">
-              <label className="form-label">Enter Your Email</label>
-              <div className="input-group">
-                <span className="input-group-text">
-                  <i className="bi bi-person"></i>
-                </span>
-                <input
-                  type="email"
-                  className="form-control"
-                  placeholder="Enter Your Email Here" value={mail} onChange={(e) => setMail(e.target.value)}
-                />
-              </div>
-            </div>
 
-            <div className="mb-4">
-              <label className="form-label">Enter Your Password</label>
-              <div className="input-group">
-                <span className="input-group-text">
-                  <i className="bi bi-lock"></i>
-                </span>
-                <input
-                  type="password"
-                  className="form-control"
-                  placeholder="Enter Your Password Here" value={password} onChange={(e) => setPassword(e.target.value)}
-                />
+              <div className="mb-3">
+                <label className="form-label">Enter Your Email</label>
+                <div className="input-group">
+                  <span className="input-group-text">
+                    <i className="bi bi-envelope"></i>
+                  </span>
+                  <input
+                    type="email"
+                    className="form-control"
+                    placeholder="Enter Your Email Here"
+                    value={mail}
+                    onChange={(e) => setMail(e.target.value)}
+                  />
+                </div>
               </div>
-            </div>
 
-            <div className="d-grid mb-3">
-              <button className="btn btn-success" type="submit">Get Started</button>
-            </div>
-             </form>
+              <div className="mb-4">
+                <label className="form-label">Enter Your Password</label>
+                <div className="input-group">
+                  <span className="input-group-text">
+                    <i className="bi bi-lock"></i>
+                  </span>
+                  <input
+                    type="password"
+                    className="form-control"
+                    placeholder="Enter Your Password Here"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="d-grid mb-3">
+                <button className="btn btn-success" type="submit">
+                  Get Started
+                </button>
+              </div>
+            </form>
 
             <div className="text-center my-3">
               <hr />
-              <span className="position-relative px-2 bg-white" style={{ top: "-18px" }}>OR</span>
+              <span
+                className="position-relative px-2 bg-white"
+                style={{ top: "-18px" }}
+              >
+                OR
+              </span>
             </div>
 
             <div className="d-grid">
@@ -151,17 +157,16 @@ const SignupforBuyer = () => {
                   src="https://developers.google.com/identity/images/g-logo.png"
                   alt="Google"
                   width="20"
-                  className="me-2" 
+                  className="me-2"
                 />
                 Sign up with Google
               </button>
             </div>
           </div>
         </div>
-       
       </div>
     </div>
   );
 };
 
-export default SignupforBuyer;
+export default SignupforBuyer;    

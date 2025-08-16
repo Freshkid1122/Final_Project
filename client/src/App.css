@@ -40,3 +40,10 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Add this to your CSS file (e.g., App.css or index.css) */
+@media (min-width: 992px) {
+  .w-lg-custom {
+    width: 60% !important;
+  }
+}

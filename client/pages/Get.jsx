@@ -41,8 +41,10 @@ const Get = () => {
                         <div>
                             <h5 className="fw-bold mb-1">Sign Up As A Customer</h5>
                             <p className="mb-2">Order Your Favorite Food in Minutes!</p>
-                           <Link to="/Signup" > <button className="btn btn-success">Get Started</button> </Link>
-                           
+                            <div className="d-flex gap-2">
+                                <Link to="/signup"><button className="btn btn-success">Sign Up</button></Link>
+                                <Link to="/signin/buyer"><button className="btn btn-outline-success">Sign In</button></Link>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -54,7 +56,10 @@ const Get = () => {
                         <div>
                             <h5 className="fw-bold mb-1">Sign Up As A Restaurant</h5>
                             <p className="mb-2">Expand your reach & attract new customers</p>
-                            <button className="btn btn-success">Get Started</button>
+                            <div className="d-flex gap-2">
+                                <Link to="/resturant"><button className="btn btn-success">Sign Up</button></Link>
+                                <Link to="/signin/restaurant"><button className="btn btn-outline-success">Sign In</button></Link>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -68,7 +73,10 @@ const Get = () => {
                         <div>
                             <h5 className="fw-bold mb-1">Sign Up as a Rider</h5>
                             <p className="mb-2">Earn Money on Your Own Schedule!</p>
-                            <button className="btn btn-success">Get Started</button>
+                            <div className="d-flex gap-2">
+                                <Link to="/Riders"><button className="btn btn-success">Sign Up</button></Link>
+                                <Link to="/signin/rider"><button className="btn btn-outline-success">Sign In</button></Link>
+                            </div>
                         </div>
                     </div>
                 </div>

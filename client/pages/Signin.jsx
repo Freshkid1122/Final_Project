@@ -33,9 +33,27 @@ const Signin = () => {
   try {
       const res = await axios.post(url, allData);
       if (res.status === 200) {
+          // Store token and user info
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("user", JSON.stringify(res.data.user));
+          localStorage.setItem("name", res.data.user.name);
+          localStorage.setItem("userType", res.data.user.userType);
+          
           setMessage("User Signed In Successfully");
           setMessageType("success");
-          setTimeout(() => navigate("/dashboard"), 2000);
+          
+          // Redirect based on user type
+          const userType = res.data.user.userType;
+          let redirectPath = "/dashboard"; // default
+          
+          if (userType === "buyer") {
+            redirectPath = "/buyer-dashboard";
+          } else if (userType === "rider") {
+            redirectPath = "/rider-dashboard";
+          }
+          // restaurant users go to /dashboard (existing path)
+          
+          setTimeout(() => navigate(redirectPath), 2000);
       }
     } catch (error) {
         if (error.response && error.response.data && error.response.data.error) {
@@ -59,7 +77,7 @@ const Signin = () => {
         <div className="col-12 col-md-6 d-flex align-items-center justify-content-center p-0" style={{ backgroundColor: "#e1f0d3" }}>
           <img
             src={buyer}
-            alt="signup-illustration"
+            alt="signin-illustration"
             className="img-fluid w-100 h-100"
             style={{ objectFit: "cover", minHeight: "250px" }}
           />
